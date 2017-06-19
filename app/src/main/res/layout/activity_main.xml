@@ -11,24 +11,22 @@
         android:id="@+id/myview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true">
         <CheckBox
             android:id="@+id/checkall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="全选"/>
+
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:text="price"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

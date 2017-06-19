@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 
 	private OnItemClickListener onItemClickListener;
 
+	private OnItemRemoveListner OnItemRemoveListner;
+
 	public MyAdapter(Context context, List<CheckBean> list) {
 		this.context = context;
 		this.list = list;
@@ -43,7 +46,7 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 
 	@Override
 	public void onBindViewHolder(final MyAdapter.TViewHolder holder, final int position) {
-		holder.price.setText("『000000』"+list.get(position).getPrice());
+		holder.price.setText(list.get(position).getPrice());
 		holder.check.setChecked(list.get(position).getCheck());
 		holder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -53,13 +56,23 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 			}
 		});
 
-		holder.check.setOnClickListener(new View.OnClickListener() {
+		holder.remove.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(OnItemRemoveListner !=null){
+					OnItemRemoveListner.OnItemRemoveListner(v,position);
+				}
+			}
+		});
+
+		holder.check.setOnClickListener(null);
+		/*holder.check.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				onItemClickListener.OnItemClick(v,holder,position);
 				notifyItemChanged(position);
 			}
-		});
+		});*/
 	}
 
 	@Override
@@ -76,10 +89,12 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 	class TViewHolder extends RecyclerView.ViewHolder{
 		CheckBox check;
 		TextView price;
+		Button remove;
 		public TViewHolder(View itemView) {
 			super(itemView);
 			check = (CheckBox)itemView.findViewById(R.id.checkalla);
 			price = (TextView)itemView.findViewById(R.id.pricea);
+			remove = (Button)itemView.findViewById(R.id.remove);
 		}
 	}
 
@@ -89,5 +104,13 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 
 	public void setOnItemClickListener(OnItemClickListener listener){
 		this.onItemClickListener = listener;
+	}
+
+	public interface OnItemRemoveListner {
+		void OnItemRemoveListner(View view,int position);
+	}
+
+	public void setOnItemRemoveListner(OnItemRemoveListner onItemRemoveListner) {
+		this.OnItemRemoveListner = onItemRemoveListner;
 	}
 }
