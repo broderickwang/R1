@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">R1</string>
+    <string name="numbers">0123456789</string>
 </resources>

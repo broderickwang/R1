@@ -14,6 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/checkalla"
         android:text="price"/>
+    <marc.com.r1.NumberView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/pricea">
+
+    </marc.com.r1.NumberView>
     <Button
         android:id="@+id/remove"
         android:layout_width="wrap_content"
