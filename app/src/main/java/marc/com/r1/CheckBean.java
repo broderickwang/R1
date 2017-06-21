@@ -19,6 +19,12 @@ public class CheckBean {
 		this.check = check;
 	}
 
+	public CheckBean(String price, Boolean check, int count) {
+		this.price = price;
+		this.check = check;
+		this.count = count;
+	}
+
 	public int getCount() {
 		return count;
 	}
