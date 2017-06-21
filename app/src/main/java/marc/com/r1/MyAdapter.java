@@ -30,6 +30,8 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 
 	private OnItemRemoveListner OnItemRemoveListner;
 
+	private NumberView.NumberChangeListner numberChangeListner;
+
 	public MyAdapter(Context context, List<CheckBean> list) {
 		this.context = context;
 		this.list = list;
@@ -44,10 +46,12 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 		return th;
 	}
 
+
 	@Override
 	public void onBindViewHolder(final MyAdapter.TViewHolder holder, final int position) {
 		holder.price.setText(list.get(position).getPrice());
 		holder.check.setChecked(list.get(position).getCheck());
+		holder.bCount.setText(list.get(position).getCount()+"");
 		holder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -90,11 +94,16 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 		CheckBox check;
 		TextView price;
 		Button remove;
+		NumberView bCount;
 		public TViewHolder(View itemView) {
 			super(itemView);
 			check = (CheckBox)itemView.findViewById(R.id.checkalla);
 			price = (TextView)itemView.findViewById(R.id.pricea);
 			remove = (Button)itemView.findViewById(R.id.remove);
+			bCount = (NumberView)itemView.findViewById(R.id.beanCount);
+
+			if(numberChangeListner!=null)
+				bCount.setNumberChangeListner(numberChangeListner);
 		}
 	}
 
@@ -112,5 +121,9 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.TViewHolder>{
 
 	public void setOnItemRemoveListner(OnItemRemoveListner onItemRemoveListner) {
 		this.OnItemRemoveListner = onItemRemoveListner;
+	}
+
+	public void setNumberChangeListner(NumberView.NumberChangeListner numberChangeListner) {
+		this.numberChangeListner = numberChangeListner;
 	}
 }

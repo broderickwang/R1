@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.security.PublicKey;
+
 /**
  * Created by Broderick
  * User: Broderick
@@ -29,6 +31,10 @@ public class NumberView extends LinearLayout {
 	private EditText number;
 
 	private int miusResourceId,plusResourceId;
+
+	private NumberListner numberListner;
+
+	private NumberChangeListner numberChangeListner;
 
 	public NumberView(Context context) {
 		this(context,null);
@@ -65,6 +71,9 @@ public class NumberView extends LinearLayout {
 					number.setText(count+"");
 				}
 
+				if(numberChangeListner != null)
+					numberChangeListner.NumberChanged(number);
+
 			}
 		});
 
@@ -74,9 +83,36 @@ public class NumberView extends LinearLayout {
 				int count = Integer.valueOf(number.getText().toString());
 				count++;
 				number.setText(count+"");
+
+				if(numberChangeListner != null)
+					numberChangeListner.NumberChanged(number);
 			}
 		});
 	}
 
+	public void setNumberListner(NumberListner numberListner) {
+		this.numberListner = numberListner;
+	}
+
+	public int getNumber(){
+		return Integer.valueOf(number.getText().toString());
+	}
+
+	public void setText(CharSequence text){
+		this.number.setText(text);
+	}
+
+	public void setNumberChangeListner(NumberChangeListner numberChangeListner) {
+		this.numberChangeListner = numberChangeListner;
+	}
+
+	interface NumberListner{
+		void NumberMinusListener();
+		void NumberPlusListener();
+	}
+
+	interface NumberChangeListner{
+		void NumberChanged(EditText view);
+	}
 
 }

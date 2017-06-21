@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private RecyclerView recyclerView;
 
-	private CheckBox checkBox;
+	private CheckBox checkAll;
 
 	private List<CheckBean> list;
 
@@ -23,15 +24,15 @@ public class MainActivity extends AppCompatActivity {
 
 	private int priceCount = 0;
 
-	private TextView price;
+	private TextView totalPrice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		recyclerView = (RecyclerView)findViewById(R.id.myview);
-		checkBox = (CheckBox)findViewById(R.id.checkall);
-		price = (TextView)findViewById(R.id.price);
+		checkAll = (CheckBox)findViewById(R.id.checkall);
+		totalPrice = (TextView)findViewById(R.id.price);
 
 		initData();
 
@@ -41,24 +42,24 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void OnItemClick(View view, MyAdapter.TViewHolder holder, int position) {
 				holder.check.setChecked(!holder.check.isChecked());
-				list.get(position).setCheck(holder.check.isChecked());
 
-				if(price.getText()!=null){
-					priceCount = Integer.valueOf(price.getText().toString());
-				}
+				CheckBean cb = list.get(position);
+
+				cb.setCheck(holder.check.isChecked());
+				cb.setCount(holder.bCount.getNumber());
 
 				if (holder.check.isChecked()&&(count<list.size())){
 					count++;
-					priceCount += Integer.valueOf(list.get(position).getPrice());
 				}else if(!holder.check.isChecked() && (count>0)){
 					count--;
-					priceCount -= Integer.valueOf(list.get(position).getPrice());
 				}
-				price.setText(""+priceCount);
+
 				if(count == list.size()){
-					checkBox.setChecked(true);
+					checkAll.setChecked(true);
 				}else
-					checkBox.setChecked(false);
+					checkAll.setChecked(false);
+
+				calculate();
 
 			}
 		});
@@ -69,24 +70,24 @@ public class MainActivity extends AppCompatActivity {
 				my.notifyDataSetChanged();
 			}
 		});
+
+		my.setNumberChangeListner(new NumberView.NumberChangeListner() {
+			@Override
+			public void NumberChanged(EditText view) {
+
+			}
+		});
+
 		recyclerView.setAdapter(my);
 
 
-		checkBox.setOnClickListener(new View.OnClickListener() {
+		checkAll.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				for (CheckBean checkBean : list) {
-					checkBean.setCheck(checkBox.isChecked());
+					checkBean.setCheck(checkAll.isChecked());
 				}
-				if(checkBox.isChecked()){
-					priceCount = 0;
-					for (CheckBean checkBean : list) {
-						priceCount += Integer.valueOf(checkBean.getPrice());
-					}
-					price.setText(priceCount+"");
-				}else{
-					price.setText("0");
-				}
+				calculate();
 				my.notifyDataSetChanged();
 			}
 		});
@@ -101,4 +102,13 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 
+	private void calculate(){
+		double total = 0.0;
+		for (CheckBean checkBean : list) {
+			if(checkBean.getCheck())
+				total += checkBean.getCount()*Double.valueOf(checkBean.getPrice());
+		}
+
+		totalPrice.setText(""+total);
+	}
 }

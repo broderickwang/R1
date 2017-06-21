@@ -12,10 +12,19 @@ package marc.com.r1;
 public class CheckBean {
 	private String price;
 	private Boolean check;
+	private int count;
 
 	public CheckBean(String price, Boolean check) {
 		this.price = price;
 		this.check = check;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public String getPrice() {
